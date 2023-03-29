@@ -1,4 +1,4 @@
-package smartapigo
+package angelone
 
 import (
 	"testing"
@@ -44,8 +44,8 @@ func (ts *TestSuite) TestPlaceOrder(t *testing.T) {
 
 func (ts *TestSuite) TestModifyOrder(t *testing.T) {
 	t.Parallel()
-	params := ModifyOrderParams{"NORMAL", "test", "LIMIT", "INTRADAY", "DAY", "19400", "1","SBI-EQ","3045","NSE"}
-	orderResponse, err := ts.TestConnect.ModifyOrder( params)
+	params := ModifyOrderParams{"NORMAL", "test", "LIMIT", "INTRADAY", "DAY", "19400", "1", "SBI-EQ", "3045", "NSE"}
+	orderResponse, err := ts.TestConnect.ModifyOrder(params)
 	if err != nil {
 		t.Errorf("Error while updating order. %v", err)
 	}
@@ -58,7 +58,7 @@ func (ts *TestSuite) TestCancelOrder(t *testing.T) {
 	t.Parallel()
 	parentOrderID := "test"
 
-	orderResponse, err := ts.TestConnect.CancelOrder("NORMAL",parentOrderID)
+	orderResponse, err := ts.TestConnect.CancelOrder("NORMAL", parentOrderID)
 	if err != nil {
 		t.Errorf("Error while cancellation of an order. %v", err)
 	}
@@ -82,7 +82,7 @@ func (ts *TestSuite) TestGetPositions(t *testing.T) {
 
 func (ts *TestSuite) TestConvertPosition(t *testing.T) {
 	t.Parallel()
-	params := ConvertPositionParams{"NSE","SBIN-EQ","DELIVERY","MARGIN","BUY",1,"DAY"}
+	params := ConvertPositionParams{"NSE", "SBIN-EQ", "DELIVERY", "MARGIN", "BUY", 1, "DAY"}
 	err := ts.TestConnect.ConvertPosition(params)
 	if err != nil {
 		t.Errorf("Error while fetching positions. %v", err)

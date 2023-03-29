@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	SmartApi "github.com/angel-one/smartapigo"
-	"github.com/angel-one/smartapigo/websocket"
 	"time"
+
+	"github.com/santoshanand/angelone"
+	"github.com/santoshanand/angelone/websocket"
 )
 
 var socketClient *websocket.SocketClient
@@ -46,10 +47,10 @@ func onNoReconnect(attempt int) {
 func main() {
 
 	// Create New Angel Broking Client
-	ABClient := SmartApi.New("Your Client Code", "Your Password", "Your api key")
+	ABClient := angelone.New("Your Client Code", "Your Password", "Your api key")
 
 	// User Login and Generate User Session
-	session, err := ABClient.GenerateSession()
+	session, err := ABClient.GenerateSession("")
 
 	if err != nil {
 		fmt.Println(err.Error())

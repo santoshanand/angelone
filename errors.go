@@ -1,10 +1,10 @@
-package smartapigo
+package angelone
 
 // Error is the error type used for all API errors.
 type Error struct {
-	Code      string
-	Message   string
-	Data      interface{}
+	Code    string
+	Message string
+	Data    interface{}
 }
 
 // This makes Error a valid Go error type.

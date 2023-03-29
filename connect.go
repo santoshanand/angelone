@@ -1,9 +1,9 @@
-package smartapigo
+package angelone
 
 import (
 	"crypto/tls"
-	_ "fmt"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -16,6 +16,9 @@ type Client struct {
 	baseURI     string
 	apiKey      string
 	httpClient  HTTPClient
+	publicIP    string
+	localIP     string
+	mac         string
 }
 
 const (
@@ -25,18 +28,18 @@ const (
 )
 
 // New creates a new Smart API client.
-func New(clientCode string,password string,apiKey string) *Client {
+func New(clientCode string, password string, apiKey string) *Client {
 	client := &Client{
 		clientCode: clientCode,
-		password: password,
-		apiKey: apiKey,
-		baseURI: baseURI,
+		password:   password,
+		apiKey:     apiKey,
+		baseURI:    baseURI,
 	}
 
 	// Create a default http handler with default timeout.
 	client.SetHTTPClient(&http.Client{
-		Timeout: requestTimeout,
-		Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify : true}},
+		Timeout:   requestTimeout,
+		Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
 	})
 
 	return client
@@ -80,28 +83,27 @@ func (c *Client) doEnvelope(method, uri string, params map[string]interface{}, h
 		headers = map[string][]string{}
 	}
 
-	localIp,publicIp,mac,err := getIpAndMac()
-
-	if err != nil {
-		return err
+	localIP, publicIP, mac := c.localIP, c.publicIP, c.mac
+	if strings.Trim(c.publicIP, "") == "" {
+		lIP, pIP, macAddress, err := getIpAndMac()
+		if err != nil {
+			return err
+		}
+		localIP, publicIP, mac = lIP, pIP, macAddress
 	}
 
 	// Add Kite Connect version to header
 	headers.Add("Content-Type", "application/json")
-	headers.Add("X-ClientLocalIP", localIp)
-	headers.Add("X-ClientPublicIP", publicIp)
+	headers.Add("X-ClientLocalIP", localIP)
+	headers.Add("X-ClientPublicIP", publicIP)
 	headers.Add("X-MACAddress", mac)
 	headers.Add("Accept", "application/json")
 	headers.Add("X-UserType", "USER")
 	headers.Add("X-SourceID", "WEB")
-	headers.Add("X-PrivateKey",c.apiKey)
-	if authorization != nil && authorization[0]{
-		headers.Add("Authorization","Bearer "+c.accessToken)
+	headers.Add("X-PrivateKey", c.apiKey)
+	if authorization != nil && authorization[0] {
+		headers.Add("Authorization", "Bearer "+c.accessToken)
 	}
 
 	return c.httpClient.DoEnvelope(method, c.baseURI+uri, params, headers, v)
 }
-
-
-
-

@@ -1,4 +1,4 @@
-module github.com/angel-one/smartapigo
+module github.com/santoshanand/angelone
 
 go 1.14
 

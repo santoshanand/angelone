@@ -1,4 +1,4 @@
-package smartapigo
+package angelone
 
 import (
 	"testing"
