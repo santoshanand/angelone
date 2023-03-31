@@ -35,7 +35,7 @@ func TestClient_Instrument(t *testing.T) {
 		t.Errorf("Error while fetching instrument. %v", err)
 	}
 
-	if res != nil && res.Token != "" {
+	if res != nil && res.Token == "" {
 		t.Errorf("instrument not found")
 	}
 }
