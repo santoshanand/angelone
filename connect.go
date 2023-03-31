@@ -19,6 +19,8 @@ type Client struct {
 	publicIP    string
 	localIP     string
 	mac         string
+	instruments map[string]Instrument
+	date        string
 }
 
 const (
